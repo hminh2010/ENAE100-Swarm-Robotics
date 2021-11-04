@@ -1,9 +1,31 @@
+#include <kilolib.h>
+
+int dist = 0;
+message_t rcvd_message;
+int new = 0;
+
+void message_rx(message_t *msg, distance_measurement_t *dist)
+{
+  rcvd_message = *msg;
+  new = 1;
+}
+
 void setup
 {
 }
 
 void loop
 {
+  set_motors(255, 255);
+  if (new == 1)
+  {
+    dist = estimate_disatnce(&distance_measurement_t *d);
+    if (dist < 100)
+    {
+      set_motors(0, 0);
+    }
+    new = 0;
+  }  
 }
 
 int main
