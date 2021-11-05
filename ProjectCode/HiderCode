@@ -2,32 +2,52 @@
 
 int dist = 0;
 message_t rcvd_message;
+message_t rcvd_message_hider;
 int new = 0;
+int new_hider = 0;
 
 void message_rx(message_t *msg, distance_measurement_t *dist)
 {
-  rcvd_message = *msg;
-  new = 1;
+  //when message is received from hunter, register it
+  //change the new_hider variable to 1 to acknowledge that mesage was received
+}
+
+//send message to other robots of it's distance from the other robots
+
+void message_rx(message_t *msg, distance_measurement_t *dist)
+{
+  //when message is received from hider, register it
+  //change the new_hider variable to 1 to acknowledge that mesage was received
 }
 
 void setup
 {
+  I don't know. Please help
 }
 
 void loop
 {
-  set_motors(255, 255);
+  //start motors
+  //move about semi-randomly
   if (new == 1)
   {
-    dist = estimate_disatnce(&distance_measurement_t *d);
-    if (dist < 100)
+    //measure distance from the received message from hunter
+    if (dist < 100) //if the distance from the hunter robot's message transmission is less than 0
     {
-      set_motors(0, 0);
+      //stop the hider's motors
     }
-    new = 0;
+    //set the "new" variable back to 0
+  }  
+  
+  if (new_hider == 1)
+  {
+    //measure distance from the received message from hider
+    //go away from other hider robots if too close
+    //set the "new" variable back to 0
   }  
 }
 
 int main
 {
+  //I don't know. Please help
 }
