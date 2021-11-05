@@ -1,11 +1,36 @@
+#include <kilolib.h>
+
+//variables for the distance from each hider
+message_t rcvd_message;
+int new = 0;
+//variables for sending out messages and whatever else is needed
+
+void message_rx(message_t *msg, distance_measurement_t *dist)
+{
+  //when message is received from hiders, register it
+  //change the new variable to 1 to acknowledge that mesage was received
+}
+
+//send message to other robots of it's distance from the other robots
+
+
 void setup
 {
+  //I don't know. Please help
 }
 
 void loop
 {
+  //start motors
+  if (new == 1)
+  {
+    //measure distance from the received messages from hiders
+    // go in direction of the closest hider bot
+    //set the "new" variable back to 0
+  }  
 }
 
 int main
 {
+  //I don't know. Please help
 }
