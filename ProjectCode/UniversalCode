@@ -2,6 +2,7 @@
 #include <kilolib.h>
 #define HIDING_BOT 0 
 #define CAUGHT_BOT 1 
+#define HUNTER_BOT 2
 #define GRADIENT_MAX 255
 #define SEED_ID 42
 
@@ -16,16 +17,19 @@ uint32_t last_changed = 0;
 
 void setup
 {
-    state = FORWARD_GREEN;
-    last_state_update = kilo_ticks;
-    
     //If the robot is the seed, its gradient should be 0: overwrite the 
     // previously set value of GRADIENT_MAX.
     if (kilo_uid == SEED_ID)
     {
+        state = HUNTER_BOT;
         own_gradient = 0;
     }
     
+    else
+    {
+        state = HIDING_BOT;
+    }
+    last_state_update = kilo_ticks;
     // Set the transmission message.
     message.type = NORMAL;
     message.data[0] = own_gradient;
@@ -75,8 +79,16 @@ void loop
 
         else if (state == CAUGHT_BOT)
         {
-                set_color(RGB(0, 0, 1)); //blue light means bot has been frozen
-                //bot does nothing
+            set_color(RGB(0, 0, 1)); //blue light means bot has been frozen
+            //bot does nothing
+        }
+        
+        else if (state == HUNTER_BOT)
+        {
+            set_color(RGB(1, 0, 0));
+            spinup_motors();
+            set_motors(kilo_straight_left, kilo_straight_righ
+            
         }
    }  
 }
