@@ -87,7 +87,7 @@ void loop
         {
             set_color(RGB(1, 0, 0));
             spinup_motors();
-            set_motors(kilo_straight_left, kilo_straight_righ
+            set_motors(kilo_straight_left, kilo_straight_right);
             
         }
    }  
