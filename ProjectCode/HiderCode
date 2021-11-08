@@ -44,29 +44,39 @@ void loop
                 // Only pay attention to messages if this robot is not the seed.
             if (kilo_uid != SEED_ID)
             {
-              if (new_message == 1)
-              {
+                if (new_message == 1)
+                {
                 // If a neighbor's gradient is 2 or more less than this robot's 
-                // gradient, reduce the latter to the neighbor's gradient + 1.
-            if (own_gradient > received_gradient + 1)
-            {
-                own_gradient = received_gradient + 1;
-                
-                // Update the transmission message whenever the gradient changes.
-                message.type = NORMAL;
-                message.data[0] = own_gradient;
-                message.crc = message_crc(&message);
-            }
+                // gradient, reduce the latter to the neighbor's gradient + 1
+                    if (own_gradient > received_gradient + 1)
+                    {
+                        own_gradient = received_gradient + 1;
+                        // Update the transmission message whenever the gradient changes.
+                        message.type = NORMAL;
+                        message.data[0] = own_gradient;
+                        message.crc = message_crc(&message);
+                        
+                    }
+                    
+                    new_message = 0;
+                }
             
-            new_message = 0;
+            }
+            if (own_gradient == 0) //if seeker bot is right next to hider bot, change state to CAUGHT_BOT
+            {
+                state = CAUGHT_BOT
+            }
+            else
+            {
+                spinup_motors();
+                set_motors(kilo_straight_left, kilo_straight_right);//needs to be randomized
+            }
         }
-            //bot moves in random directions otherwise
-            ifstate = LEFT_RED;
-        }
+
         else if (state == CAUGHT_BOT)
         {
-            set_color(RGB(0, 0, 1)); //blue light means bot has been frozen
-            //bot does nothing
+                set_color(RGB(0, 0, 1)); //blue light means bot has been frozen
+                //bot does nothing
         }
    }  
 }
