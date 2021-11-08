@@ -84,6 +84,8 @@ void loop
 int main
 {
     kilo_init();
+    kilo_message_rx = message_rx;
+    kilo_message_tx = message_tx;
     kilo_start(setup, loop);
     
     return 0;
