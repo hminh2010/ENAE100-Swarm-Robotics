@@ -1,4 +1,4 @@
-//defines states for bots - HIDING_BOT runs the loop for when bot hasn't been caught, CAUGHT_BOT runs when it is caught
+///defines states for bots - HIDING_BOT runs the loop for when bot hasn't been caught, CAUGHT_BOT runs when it is caught
 #include <kilolib.h>
 #define HIDING_BOT 0 
 #define CAUGHT_BOT 1 
@@ -49,26 +49,39 @@ void loop
             if (kilo_uid != SEED_ID)
             {
                 if (new_message == 1)
-                {
-                // If a neighbor's gradient is 2 or more less than this robot's 
-                // gradient, reduce the latter to the neighbor's gradient + 1
-                    if (own_gradient > received_gradient + 1)
                     {
-                        own_gradient = received_gradient + 1;
-                        // Update the transmission message whenever the gradient changes.
-                        message.type = NORMAL;
-                        message.data[0] = own_gradient;
-                        message.crc = message_crc(&message);
-                        
-                    }
-                    
+                // If a neighbor's gradient is 1 or more less than this robot's
+                // gradient, the latter should not increase.
+                // Set last_gradient_anchored to kilo_ticks to inhibit activation of
+                // the increment statement.
+                    if (own_gradient >= received_gradient + 1)
+                        {
+                	        last_gradient_anchored = kilo_ticks;
+                        }			
+	 
+                   // If a neighbor's gradient is 2 or more less than this robot's 
+                    // gradient, reduce the latter to the neighbor's gradient + 1.
+                    if (own_gradient > received_gradient + 1)
+                        {
+                            own_gradient = received_gradient + 1;
+                
+                            // Update the transmission message whenever the gradient changes.
+                            message.type = NORMAL;
+                            message.data[0] = own_gradient;
+                            message.crc = message_crc(&message);
+                        }
                     new_message = 0;
-                }
-            
+                    }
+                // If no neighbor with a gradient of 1 or more less than this robot's
+                // gradient is detected within 2 seconds, increment the latter by 1.
+                if ((kilo_ticks > (last_gradient_anchored + 64)) && (own_gradient < GRADIENT_MAX))
+                    {
+                        own_gradient = own_gradient + 1;
+                    }
             }
             if (own_gradient == 1) //if seeker bot is right next to hider bot, change state to CAUGHT_BOT
             {
-                state = CAUGHT_BOT;
+                state = CAUGHT_BOT
             }
             else
             {
