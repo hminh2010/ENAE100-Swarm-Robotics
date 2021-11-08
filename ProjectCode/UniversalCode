@@ -68,7 +68,7 @@ void loop
             }
             if (own_gradient == 0) //if seeker bot is right next to hider bot, change state to CAUGHT_BOT
             {
-                state = CAUGHT_BOT
+                state = CAUGHT_BOT;
             }
             else
             {
