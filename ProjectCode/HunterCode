@@ -1,36 +1,50 @@
 #include <kilolib.h>
 
-//variables for the distance from each hider
-message_t rcvd_message;
-int new = 0;
-//variables for sending out messages and whatever else is needed
+// Since 1 byte (8 bits) of the message is used to communicate gradients, the
+// maximum possible gradient is 2^8 - 1 = 255.
+#define GRADIENT_MAX 255
+// This is an arbitrary number, but it's important that exactly one robot in the
+// group is calibrated to have this ID.
+#define SEED_ID 42
 
-void message_rx(message_t *msg, distance_measurement_t *dist)
-{
-  //when message is received from hiders, register it
-  //change the new variable to 1 to acknowledge that mesage was received
-}
-
-//send message to other robots of it's distance from the other robots
-
+int own_gradient = GRADIENT_MAX;
+int received_gradient = 0;
+int new_message = 0;
+message_t message;
 
 void setup
 {
-  //I don't know. Please help
+  
 }
 
 void loop
 {
-  //start motors
-  if (new == 1)
-  {
-    //measure distance from the received messages from hiders
-    // go in direction of the closest hider bot
-    //set the "new" variable back to 0
-  }  
+    set_color(RGB(1, 0, 0));//hunters use red
+    spinup_motors();
+    set_motors(kilo_straight_left, kilo_straight_right);// need to randomize
+}
+
+message_t *message_tx()
+{
+    return &message;
+}
+
+void message_rx(message_t *m, distance_measurement_t *d)
+{
+    // Only process this message if the previous one has been processed.
+    if (new_message == 0)
+    {
+        new_message = 1;
+        received_gradient = m->data[0];
+    }
 }
 
 int main
 {
-  //I don't know. Please help
+    kilo_init();
+    kilo_message_rx = message_rx;
+    kilo_message_tx = message_tx;
+    kilo_start(setup, loop);
+    
+    return 0;
 }
