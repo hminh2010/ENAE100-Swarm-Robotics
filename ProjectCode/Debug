@@ -8,12 +8,9 @@
 
 int state = 0;
 uint32_t last_changed = 0;
-//declare variables to hold the state and the clock ticks
 
 void setup
 {
-    //If the robot is the seed, its gradient should be 0: overwrite the 
-    // previously set value of GRADIENT_MAX.
     if (kilo_uid == SEED_ID)
     {
         state = HUNTER_BOT;
