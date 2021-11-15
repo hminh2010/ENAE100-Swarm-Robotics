@@ -1,0 +1,57 @@
+///defines states for bots - HIDING_BOT runs the loop for when bot hasn't been caught, CAUGHT_BOT runs when it is caught
+#include <kilolib.h>
+#define HIDING_BOT 0 
+#define CAUGHT_BOT 1 
+#define HUNTER_BOT 2
+#define GRADIENT_MAX 255
+#define SEED_ID 42
+
+int state = 0;
+uint32_t last_changed = 0;
+//declare variables to hold the state and the clock ticks
+
+void setup
+{
+    //If the robot is the seed, its gradient should be 0: overwrite the 
+    // previously set value of GRADIENT_MAX.
+    if (kilo_uid == SEED_ID)
+    {
+        state = HUNTER_BOT;
+    }
+    if (kilo_uid == 0)
+    {
+        state = CAUGHT_BOT;
+        
+    else
+    {
+        state = HIDING_BOT;
+    }
+}
+
+void loop
+{
+        if (state == HIDING_BOT)
+        {
+            set_color(RGB(0, 1, 0)); //green light means bot hasn't been frozen
+                // Only pay attention to messages if this robot is not the seed.
+        }
+        else if (state == CAUGHT_BOT)
+        {
+            set_color(RGB(0, 0, 1)); //blue light means bot has been frozen
+            //bot does nothing
+        }
+        
+        else if (state == HUNTER_BOT)
+        {
+            set_color(RGB(1, 0, 0));
+            
+        }
+}
+
+int main
+{
+    kilo_init();
+    kilo_start(setup, loop);
+    
+    return 0;
+}
